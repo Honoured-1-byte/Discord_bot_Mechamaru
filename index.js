@@ -134,13 +134,13 @@ if (process.env.GEMINI_API_KEY) {
             },
         ],
         generationConfig: {
-            maxOutputTokens: 2000,
+            maxOutputTokens: 8000,
             temperature: 0.7,
         },
     });
 }
 
-async function getLLMReply(channelId, userInput, username) {
+async function getLLMReply(channelId, userInput, username, retries = 3) {
     // If Gemini isn't set up, fall back
     if (!chatSession) return generateReply(userInput);
 
@@ -148,11 +148,16 @@ async function getLLMReply(channelId, userInput, username) {
         // Send the user's message to the existing chat session
         const result = await chatSession.sendMessage(`${username}: ${userInput}`);
         const response = result.response;
-        const text = response.text();
-
-        // Basic formatting cleanup
-        return text.trim();
+        return response.text().trim();
     } catch (err) {
+        // Retry on 503 (Overloaded)
+        if ((err.status === 503 || err.message?.includes('503')) && retries > 0) {
+            console.log(`Model overloaded. Retrying... (${retries} attempts left)`);
+            // Wait 2 seconds before trying again
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            return getLLMReply(channelId, userInput, username, retries - 1);
+        }
+
         console.error('Gemini reply failed:', err);
         return generateReply(userInput);
     }
