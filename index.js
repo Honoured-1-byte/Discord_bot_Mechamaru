@@ -55,7 +55,7 @@ client.on('messageCreate', async message => {
             // If OPENAI_API_KEY is provided, use LLM; otherwise fallback to rule-based
             if (process.env.GEMINI_API_KEY) {
                 const reply = await getLLMReply(message.channelId, toSay, message.author.username);
-                return message.reply({ content: reply });
+                return sendSplitMessage(message, reply);
             }
             return message.reply({ content: generateReply(toSay) });
         }
@@ -63,7 +63,7 @@ client.on('messageCreate', async message => {
         // Default reply to mention / command: prefer LLM when available
         if (process.env.GEMINI_API_KEY) {
             const reply = await getLLMReply(message.channelId, userInput, message.author.username);
-            return message.reply({ content: reply });
+            return sendSplitMessage(message, reply);
         }
         return message.reply({ content: generateReply(userInput) });
     }
@@ -183,3 +183,34 @@ app.listen(PORT, () => {
 });
 
 client.login(process.env.BOT_TOKEN);
+
+// A helper function to split long messages
+async function sendSplitMessage(message, text) {
+    const maxLength = 1900; // Safe limit (slightly less than 2000)
+
+    // If text is short, just reply normally
+    if (text.length <= maxLength) {
+        await message.reply(text);
+        return;
+    }
+
+    // If text is long, loop through and send chunks
+    const chunks = [];
+    while (text.length > 0) {
+        let chunk = text.slice(0, maxLength);
+
+        // Try to cut at the last space to avoid splitting words
+        const lastSpace = chunk.lastIndexOf(' ');
+        if (lastSpace > 0 && text.length > maxLength) {
+            chunk = chunk.slice(0, lastSpace);
+        }
+
+        chunks.push(chunk);
+        text = text.slice(chunk.length);
+    }
+
+    // Send the chunks one by one
+    for (const chunk of chunks) {
+        await message.channel.send(chunk);
+    }
+}
