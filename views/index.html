@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mechamaru | Protocol Active</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="overlay"></div>
+    <nav class="navbar">
+        <div class="logo">MECHAMARU</div>
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#about">Status</a></li>
+            <li><a href="#invite" class="btn-primary">Invite Unit</a></li>
+        </ul>
+        <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>SYSTEM ONLINE</h1>
+            <p>Advanced Discord Automation Unit. Specialized in concise interactions and mechanical precision.</p>
+            <div class="cta-group">
+                <a href="#invite" class="btn-primary">Initialize Protocol</a>
+                <a href="#features" class="btn-secondary">View Specs</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="features" class="features">
+        <h2>CORE FUNCTIONS</h2>
+        <div class="feature-grid">
+            <div class="card">
+                <h3><i class="fas fa-robot"></i> Persona Engine</h3>
+                <p>Emulates Class-1 Cursed Corpse behavior. Dry sarcasm and minimal emotional output guaranteed.</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-brain"></i> LLM Integration</h3>
+                <p>Powered by OpenAI GPT-3.5 for dynamic, context-aware responses when standard protocols fail.</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-link"></i> Link Compression</h3>
+                <p>Built-in URL shortening capability to optimize communication efficiency.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>Mechamaru System &copy; 2025. All lines secure.</p>
+    </footer>
+
+    <script>
+        const hamburger = document.querySelector(".hamburger");
+        const navLinks = document.querySelector(".nav-links");
+
+        hamburger.addEventListener("click", () => {
+            hamburger.classList.toggle("active");
+            navLinks.classList.toggle("active");
+        });
+    </script>
+</body>
+</html>
