@@ -134,7 +134,7 @@ if (process.env.GEMINI_API_KEY) {
             },
         ],
         generationConfig: {
-            maxOutputTokens: 250,
+            maxOutputTokens: 2000,
             temperature: 0.7,
         },
     });
